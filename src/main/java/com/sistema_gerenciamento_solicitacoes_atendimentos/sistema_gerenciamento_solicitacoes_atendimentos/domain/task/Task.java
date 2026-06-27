@@ -1,5 +1,10 @@
-package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.model;
+package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task;
 import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums.Priority;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums.Status;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,7 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-@Entity 
+@Entity
 public class Task {
     /*
     USER_ID(ADM)
@@ -21,9 +26,9 @@ public class Task {
     DESCRICAO
     DEADLINE/prazo
     */
-    private Long id; // CPF DA TAREFA
+    private UUID id; // CPF DA TAREFA
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     //=================================================//
     @ManyToOne
     @JoinColumn(name = "employee_id")
@@ -39,6 +44,7 @@ public class Task {
     //==============================================//
     private String titulo; // TITULO DA TASK
     private String descricao; // DESCRIÇÃO DA TASK
-    private LocalDateTime dataCriacao = LocalDateTime.now(); //DATA DE CRIAÇÃO DA TASK
+    private LocalDateTime createdAt = LocalDateTime.now(); //DATA DE CRIAÇÃO DA TASK
+    private LocalDateTime updatedAt; //DATA DE EDIÇÃO DA TASK
     private LocalDateTime deadline; // DATA PRAZO
 }
