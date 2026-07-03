@@ -1,4 +1,4 @@
-package com.sistema_gerenciamento_solicitacoes_atendimentos.repository;
+package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repository;
 
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
