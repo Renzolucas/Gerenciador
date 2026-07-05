@@ -1,9 +1,11 @@
-package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task;
+package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos;
 
 import java.util.UUID;
+
+import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Priority;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Status;
+
 import java.time.LocalDateTime;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums.Status;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums.Priority;
 
 
 public class CreateTaskBodyDTO {

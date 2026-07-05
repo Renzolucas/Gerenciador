@@ -4,8 +4,8 @@ import java.util.UUID;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums.Priority;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums.Status;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Priority;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Status;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 
 import jakarta.persistence.Entity;

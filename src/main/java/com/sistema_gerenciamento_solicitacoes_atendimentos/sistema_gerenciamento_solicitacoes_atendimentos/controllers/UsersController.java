@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.CreateUserBodyDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUserBodyDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services.UsersService;
 
 import jakarta.validation.Valid;
@@ -22,7 +22,7 @@ public class UsersController {
     }
     @PostMapping
     public ResponseEntity<Users> createUser(@Valid @RequestBody CreateUserBodyDTO dto){
-        Users createdUser = userService.createUser(dto);
-        return ResponseEntity.ok(createdUser);
+        Users createdUser = userService.create(dto);
+        return ResponseEntity.ok(createdUser); // 200
     }
 }

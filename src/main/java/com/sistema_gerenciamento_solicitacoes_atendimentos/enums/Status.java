@@ -1,4 +1,4 @@
-package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.enums;
+package com.sistema_gerenciamento_solicitacoes_atendimentos.enums;
 
 public enum Status {
     ABERTA,
