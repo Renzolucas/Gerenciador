@@ -1,5 +1,6 @@
 package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +40,51 @@ public class Users {
     private String password; // SENHA DO USUARIO
     @Enumerated(EnumType.STRING)
     private UsersRole role; // CATEGORIA DO USUARIO (ADMIN OR EMPLOYEE)
+    private LocalDateTime createdAtUser = LocalDateTime.now(); //DATA DE CRIAÇÃO DA ROLE
+
+
     /* @OneToMany()
+    @JsonIgnore
     private List<Task> tasks; */
+
+    //PARA O SERVICE
+    public Users() {
+    }
+
+    // CONSTRUCT NORMAL
+    public Users(String name, String email, String password, UsersRole role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+    //GET E SET
+    public UUID getId() {
+        return id;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public UsersRole getRole() {
+        return role;
+    }
+    public void setRole(UsersRole role) {
+        this.role = role;
+    }
+    
 }
