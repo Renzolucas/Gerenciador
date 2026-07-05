@@ -54,14 +54,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
         //PARA O SERVICE
         public Users() {
         }
-        //GET E SET
-        public UUID getId() {
-            return id;
-        }
-        
-        public String getName() {
-            return name;
-        }
         // CONSTRUCT NORMAL
         public Users(String name, String email, String password, UsersRole role, LocalDateTime createdAtUser,
                 List<Task> tarefasEmployee, List<Task> tarefasAdmin) {
@@ -72,6 +64,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
             this.createdAtUser = createdAtUser;
             this.tarefasEmployee = tarefasEmployee;
             this.tarefasAdmin = tarefasAdmin;
+        }
+        //GET E SET
+        public UUID getId() {
+            return id;
+        }
+        
+        public String getName() {
+            return name;
         }
         public void setName(String name) {
             this.name = name;
