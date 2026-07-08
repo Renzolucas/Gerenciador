@@ -1,9 +1,11 @@
 package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services;
 import java.util.Optional;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.config.SecurityConfig;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUserBodyDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
@@ -12,9 +14,10 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 public class UsersService {
     @Autowired
     private final UsersRepository usersRepository;
-
-    public UsersService(UsersRepository usersRepository) {
+    private final SecurityConfig passwordCripto;
+    public UsersService(UsersRepository usersRepository, SecurityConfig passwordCripto) {
         this.usersRepository = usersRepository;
+        this.passwordCripto = passwordCripto;
     }
     public Users create(CreateUserBodyDTO dto) {
         
@@ -24,7 +27,8 @@ public class UsersService {
         // 2. Passamos os dados do DTO (Formulário) para a Entidade
         novoUsuario.setName(dto.name());
         novoUsuario.setEmail(dto.email());
-        novoUsuario.setPassword(dto.password());
+        String senhaCriptografada = passwordCripto.passwordEncoder().encode(dto.password());
+        novoUsuario.setPassword(senhaCriptografada);
         novoUsuario.setRole(dto.role());
         
         Optional<Users> userExist = usersRepository.findByEmail(novoUsuario.getEmail());
@@ -38,4 +42,8 @@ public class UsersService {
         return usersRepository.save(novoUsuario);
     }
     
+    //PUXAR TODOS OS USUARIO
+    public List<Users> listarTodosUsuarios(){
+        return usersRepository.findAll();
+    } 
 }
