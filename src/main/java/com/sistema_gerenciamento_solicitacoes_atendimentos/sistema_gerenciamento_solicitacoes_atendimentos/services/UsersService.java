@@ -1,5 +1,6 @@
 package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Service;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.config.SecurityConfig;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUserBodyDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseListUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
-
 @Service
 public class UsersService {
     @Autowired
@@ -42,8 +43,17 @@ public class UsersService {
         return usersRepository.save(novoUsuario);
     }
     
-    //PUXAR TODOS OS USUARIO
-    public List<Users> listarTodosUsuarios(){
-        return usersRepository.findAll();
-    } 
+    // PUXAR TODOS OS USUARIOS (AGORA PROTEGIDO COM DTO)
+    public List<ResponseListUsersDTO> listarTodosUsuarios(){
+        //  Busca todo mundo do banco (com ID, senha, etc)
+        List<Users> usuariosBrutos = usersRepository.findAll();
+
+        //  Transforma (Mapeia) a lista bruta na nossa caixinha limpa (DTO)
+        return usuariosBrutos.stream().map(usuario -> new ResponseListUsersDTO(
+                usuario.getName(),
+                usuario.getEmail(),
+                usuario.getRole(),
+                usuario.getCreatedAtUser()
+        )).collect(Collectors.toList()); // Junta tudo de volta em uma Lista
+    }
 }
