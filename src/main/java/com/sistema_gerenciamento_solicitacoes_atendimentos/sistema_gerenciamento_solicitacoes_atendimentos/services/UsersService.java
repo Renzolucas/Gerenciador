@@ -62,7 +62,7 @@ public class UsersService {
     public ResponseSearchEmailID buscarUsuarioPorId(UUID id){
         //VERIFICAMOS PRIMEIRO SE EXISTE O ID
         Users buscarUsuarioBruto = usersRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("ESSE ID NAO EXISTE"));
+            .orElseThrow(() -> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
         //SE ELE EXISTIR, FAZEMOS A MESMA LOGICA DE CADA USUÁRIO, CRIAR UM NOVO DTO PARA NAO APAGAR O OUTRO
         return new ResponseSearchEmailID(
             buscarUsuarioBruto.getId(),
@@ -84,5 +84,13 @@ public class UsersService {
             buscarUsuarioBruto.getRole(),
             buscarUsuarioBruto.getCreatedAtUser()
         );
+    }
+    //DELETAR UM USUARIO
+    public void deletarUsuario(UUID id){
+        //BUSCAMOS NO BANCO UM USUARIO COM ID MANDADO PELO POSTMAN
+        Users buscarUsuarioBruto = usersRepository.findById(id)//se nao encontrado
+            .orElseThrow(()-> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
+        //se sim
+        usersRepository.delete(buscarUsuarioBruto);
     }
 }
