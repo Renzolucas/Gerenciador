@@ -31,7 +31,6 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id; // ID da Task
-    //=================================================//
     @ManyToOne
     @JoinColumn(name = "employee_id")
     @JsonIgnore
@@ -39,19 +38,17 @@ public class Task {
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private Users usersAdmin; //NOME DO ADMIN
-    //===============================================//
     @Enumerated(EnumType.STRING)
     private Status status; // DEFINIR O STATUS (ENUM COM 3 OPCAO)
     @Enumerated(EnumType.STRING)
     private Priority priority; // DEFINIR A PRIORIDADE (BAIXA,MEDIA, ALTA)
-    //==============================================//
     private String titulo; // TITULO DA TASK
     private String descricao; // DESCRIÇÃO DA TASK
     private LocalDateTime createdAt = LocalDateTime.now(); //DATA DE CRIAÇÃO DA TASK
     private LocalDateTime updatedAt; //DATA DE EDIÇÃO DA TASK
     private LocalDateTime deadline; // DATA PRAZO
     
-    //=================CONSTRUCTOR====================//
+    //CONSTRUCTOR//
     public Task(UUID id, Users usersEmployee, Users usersAdmin, Status status, Priority priority, String titulo,
             String descricao, LocalDateTime updatedAt, LocalDateTime deadline) {
         this.id = id;
@@ -69,7 +66,7 @@ public class Task {
     public Task() {
     }
 
-
+    //GETS E SETS
     public Users getUsersEmployee() {
         return usersEmployee;
     }
