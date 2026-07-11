@@ -5,6 +5,7 @@
     import java.util.UUID;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
     import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.UsersRole;
@@ -16,8 +17,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
     import jakarta.persistence.Enumerated;
     import jakarta.persistence.GeneratedValue;
     import jakarta.persistence.GenerationType;
-    import jakarta.persistence.Id;
-    import jakarta.persistence.OneToMany;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
     import jakarta.persistence.Table;
 
     @Entity //DIZ AO BANCO COM AJUDA DO SPRING (TUDO AQUI E TABELA)
@@ -29,21 +30,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
         EMAIL
         PASSWORD
     */
-        //========================================================================================//
-        @Id //DIZ AO SPRING QUE ISSO VAI SER UM "ID" OR VALOR UNICO
+        @Id
         @GeneratedValue(strategy = GenerationType.UUID) //DIZ AO SPRING QUE SE Long Id for null entao pegar o id anterior e ++
         private UUID id; // ID DO USUARIO
-        //=======================================================================================//
+
         @Column(nullable = false)
         private String name; // NOME DO USUARIO
+
         @Column(nullable = false, unique = true)
         private String email; // EMAIL DO USUARIO
+
         @Column(nullable = false)
         private String password; // SENHA DO USUARIO
+
         @Enumerated(EnumType.STRING)
         private UsersRole role; // CATEGORIA DO USUARIO (ADMIN OR EMPLOYEE)
+
         @CreationTimestamp
         private LocalDateTime createdAtUser; //DATA DE CRIAÇÃO DO USUARIO
+
+        @UpdateTimestamp
+        private LocalDateTime updateAtUser; //DATA DE ATUALIZAÇÃO
         //LISTA DE TASK QUE O USER TEM
         @OneToMany(mappedBy = "usersEmployee")
         @JsonIgnore
@@ -51,24 +58,29 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
         @OneToMany(mappedBy = "usersAdmin")
         @JsonIgnore
         private List<Task> tarefasAdmin;
+
         //PARA O SERVICE
         public Users() {
         }
+        
         // CONSTRUCT NORMAL
         public Users(String name, String email, String password, UsersRole role, LocalDateTime createdAtUser,
-                List<Task> tarefasEmployee, List<Task> tarefasAdmin) {
+        LocalDateTime updateAtUser, List<Task> tarefasEmployee, List<Task> tarefasAdmin) {
             this.name = name;
             this.email = email;
             this.password = password;
             this.role = role;
             this.createdAtUser = createdAtUser;
+            this.updateAtUser = updateAtUser;
             this.tarefasEmployee = tarefasEmployee;
             this.tarefasAdmin = tarefasAdmin;
         }
+
         //GET E SET
         public UUID getId() {
             return id;
         }
+        
         
         public String getName() {
             return name;
@@ -113,4 +125,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
             this.tarefasAdmin = tarefasAdmin;
         }
 
+        public LocalDateTime getUpdateAtUser() {
+            return updateAtUser;
+        }
+
+        public void setUpdateAtUser(LocalDateTime updateAtUser) {
+            this.updateAtUser = updateAtUser;
+        }
+        
     }

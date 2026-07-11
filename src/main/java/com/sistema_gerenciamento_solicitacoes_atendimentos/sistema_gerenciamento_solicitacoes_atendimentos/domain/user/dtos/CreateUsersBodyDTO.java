@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateUserBodyDTO(
+public record CreateUsersBodyDTO(
     //NOTBLANCK E NOTNULL SAO ANOTAÇÕES PARA NAO PERMITIR O USUARIO ENVIAR INFORMAÇÕES NULL
 
     @NotBlank(message = "Digite um nome Válido")
