@@ -5,62 +5,22 @@ import java.util.UUID;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Priority;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Status;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
-
-
-public class CreateTaskBodyDTO {
-    private String titulo; // TITULO DA TASK
-    private String descricao; // DESCRICAO
-
-    private LocalDateTime deadline; // DATA PRAZO
-
-    private UUID usersEmployeeId; //USUARIO QUE VAI FAZER TASK
-    private UUID usersAdminId; // USUARIO QUEM MANDOU A TASK
-    
-    private Status status; //STATUS DA TASK
-    private Priority priority; // PRIORIDADE
-
-    //GET E SET
-    public String getTitulo() {
-        return titulo;
-    }
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-    public String getDescricao() {
-        return descricao;
-    }
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-    public LocalDateTime getDeadline() {
-        return deadline;
-    }
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
-    }
-    public UUID getUsersEmployeeId() {
-        return usersEmployeeId;
-    }
-    public void setUsersEmployeeId(UUID usersEmployeeId) {
-        this.usersEmployeeId = usersEmployeeId;
-    }
-    public UUID getUsersAdminId() {
-        return usersAdminId;
-    }
-    public void setUsersAdminId(UUID usersAdminId) {
-        this.usersAdminId = usersAdminId;
-    }
-    public Status getStatus() {
-        return status;
-    }
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-    public Priority getPriority() {
-        return priority;
-    }
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-}
+public record CreateTaskBodyDTO( 
+    @NotBlank(message = "DIGITE UM TITULO VALIDO!!!")
+    String titulo, // TITULO DA TASK
+    @NotBlank(message = "DIGITE UMA DESCRIÇÃO VALIDO!!!")
+    String descricao, // DESCRICAO
+    LocalDateTime deadline, // DATA PRAZO
+    @NotNull(message = "DIGITE UM ID VALIDO!!!")
+    UUID usersEmployeeId, //USUARIO QUE VAI FAZER TASK
+    @NotNull(message = "DIGITE UM ID VALIDO!!!")
+    UUID usersAdminId, // USUARIO QUEM MANDOU A TASK
+    @NotNull(message = "A função (STATUS) é obrigatória")
+    Status status, //STATUS DA TASK
+    @NotNull(message = "A função (PRIORIDADE) é obrigatória")
+    Priority priority // PRIORIDADE
+){}
