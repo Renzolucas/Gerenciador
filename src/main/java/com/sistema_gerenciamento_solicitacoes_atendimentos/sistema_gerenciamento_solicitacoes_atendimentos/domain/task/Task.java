@@ -2,6 +2,7 @@ package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciament
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Priority;
@@ -44,7 +45,8 @@ public class Task {
     private Priority priority; // DEFINIR A PRIORIDADE (BAIXA,MEDIA, ALTA)
     private String titulo; // TITULO DA TASK
     private String descricao; // DESCRIÇÃO DA TASK
-    private LocalDateTime createdAt = LocalDateTime.now(); //DATA DE CRIAÇÃO DA TASK
+    @CreationTimestamp
+    private LocalDateTime createdAt;  //DATA DE CRIAÇÃO DA TASK
     private LocalDateTime updatedAt; //DATA DE EDIÇÃO DA TASK
     private LocalDateTime deadline; // DATA PRAZO
     

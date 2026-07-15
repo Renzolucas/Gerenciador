@@ -24,11 +24,16 @@ public class UsersService {
         this.passwordCripto = passwordCripto;
     }
 
-    public Users create(CreateUsersBodyDTO dto) {
+    public ResponseListUsersAndSearchUsersDTO create(CreateUsersBodyDTO dto) {
         
         // 1. Criamos a "caixa vazia" da Entidade que vai para o banco
         Users novoUsuario = new Users();
-        
+         //VERIFICA SE JA EXISTE UM EMAIL IGUAL
+        Optional<Users> userExist = usersRepository.findByEmail(novoUsuario.getEmail());
+        //SE SIM ->
+        if (userExist.isPresent()) {
+            throw new RuntimeException("Já existe usuário com email: " + novoUsuario.getEmail());
+        }
         // 2. Passamos os dados do DTO (Formulário) para a Entidade
         novoUsuario.setName(dto.name());
         novoUsuario.setEmail(dto.email());
@@ -36,16 +41,16 @@ public class UsersService {
         String senhaCriptografada = passwordCripto.passwordEncoder().encode(dto.password());
         novoUsuario.setPassword(senhaCriptografada);
         novoUsuario.setRole(dto.role());
-        
-        //VERIFICA SE JA EXISTE UM EMAIL IGUAL
-        Optional<Users> userExist = usersRepository.findByEmail(novoUsuario.getEmail());
-        //SE SIM ->
-        if (userExist.isPresent()) {
-            throw new RuntimeException("Já existe usuário com email: " + novoUsuario.getEmail());
-        }
-
         // Mandamos o repositório salvar no banco e retornamos o resultado
-        return usersRepository.save(novoUsuario);
+        novoUsuario = usersRepository.save(novoUsuario);
+        return new ResponseListUsersAndSearchUsersDTO(
+                novoUsuario.getId(),
+                novoUsuario.getName(),
+                novoUsuario.getEmail(),
+                novoUsuario.getRole(),
+                novoUsuario.getCreatedAtUser(),
+                novoUsuario.getUpdateAtUser()
+        );
     }
 
     // GET LISTAGEM PUXAR TODOS OS USUARIOS (AGORA PROTEGIDO COM DTO)

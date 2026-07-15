@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUsersBodyDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services.UsersService;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseListUsersAndSearchUsersDTO;
@@ -30,8 +29,8 @@ public class UsersController {
         this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<Users> createUser(@Valid @RequestBody CreateUsersBodyDTO dto){
-        Users createdUser = userService.create(dto);
+    public ResponseEntity<ResponseListUsersAndSearchUsersDTO> createUser(@Valid @RequestBody CreateUsersBodyDTO dto){
+        ResponseListUsersAndSearchUsersDTO createdUser = userService.create(dto);
         return ResponseEntity.ok(createdUser); // 200
     }
     //GET PARA LISTAR TODOS OS USUARIOS

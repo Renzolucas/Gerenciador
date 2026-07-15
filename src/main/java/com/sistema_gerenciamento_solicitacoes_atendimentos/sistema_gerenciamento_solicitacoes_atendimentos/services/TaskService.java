@@ -1,5 +1,4 @@
 package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services;
-import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Service;
 
@@ -8,6 +7,7 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.TaskRepository;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskBodyDTO;
 @Service
 public class TaskService {
     private final TaskRepository taskRepositoty;
@@ -18,7 +18,7 @@ public class TaskService {
         this.usersRepository = usersRepository;
     }
     
-    public Task createTask(CreateTaskBodyDTO dto){
+    public ResponseTaskBodyDTO createTask(CreateTaskBodyDTO dto){
         //CRIA UM ESPAÇO NA ENTIDADE PARA AS NOVAS INFORMAÇÕES NO BANCO
         Task novaTask = new Task();
 
@@ -35,14 +35,20 @@ public class TaskService {
         novaTask.setUsersEmployee(employee);
         novaTask.setUsersAdmin(admin);
         novaTask.setDeadline(dto.deadline());
-        novaTask.setCreatedAt(LocalDateTime.now());
         novaTask.setStatus(dto.status());
         novaTask.setPriority(dto.priority());
 
         
 
         //ATUALIZANDO O BANCO
-        return taskRepositoty.save(novaTask);
+        novaTask = taskRepositoty.save(novaTask);
+        return new ResponseTaskBodyDTO(
+        novaTask.getTitulo(),
+        novaTask.getDescricao(),
+        novaTask.getDeadline(),
+        novaTask.getStatus(),
+        novaTask.getPriority()
+        );
     }
     
 }
