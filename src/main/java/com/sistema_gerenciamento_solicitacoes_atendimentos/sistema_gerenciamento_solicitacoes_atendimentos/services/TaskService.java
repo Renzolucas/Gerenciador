@@ -17,25 +17,29 @@ public class TaskService {
         this.taskRepositoty = taskRepositoty;
         this.usersRepository = usersRepository;
     }
+    
     public Task createTask(CreateTaskBodyDTO dto){
-        //BUSCAR NO BANDO DE DADOS O ID PELA COMUNICAO USERSREPOSITY
-        Users employee = usersRepository.findById(dto.getUsersEmployeeId())
-            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + dto.getUsersEmployeeId()));
-        Users admin = usersRepository.findById(dto.getUsersAdminId())
-            .orElseThrow(() -> new RuntimeException("Admin não encontrado com o ID: " + dto.getUsersAdminId()));
-        
         //CRIA UM ESPAÇO NA ENTIDADE PARA AS NOVAS INFORMAÇÕES NO BANCO
         Task novaTask = new Task();
 
+        //BUSCAR NO BANDO DE DADOS SE EXISTE OS IDs PELA COMUNICAO USERSREPOSITY
+        Users employee = usersRepository.findById(dto.usersEmployeeId())
+            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + dto.usersEmployeeId()));
+        Users admin = usersRepository.findById(dto.usersAdminId())
+            .orElseThrow(() -> new RuntimeException("Admin não encontrado com o ID: " + dto.usersAdminId()));
+        
+        
         //DADOS DO DTO PARA A ENTIDADE
-        novaTask.setTitulo(dto.getTitulo());
-        novaTask.setDescricao(dto.getDescricao());
+        novaTask.setTitulo(dto.titulo());
+        novaTask.setDescricao(dto.descricao());
         novaTask.setUsersEmployee(employee);
         novaTask.setUsersAdmin(admin);
-        novaTask.setDeadline(dto.getDeadline());
+        novaTask.setDeadline(dto.deadline());
         novaTask.setCreatedAt(LocalDateTime.now());
-        novaTask.setStatus(dto.getStatus());
-        novaTask.setPriority(dto.getPriority());
+        novaTask.setStatus(dto.status());
+        novaTask.setPriority(dto.priority());
+
+        
 
         //ATUALIZANDO O BANCO
         return taskRepositoty.save(novaTask);
