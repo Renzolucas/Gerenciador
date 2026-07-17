@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.CreateTaskBodyDTO;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskBodyDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services.TaskService;
 
 import jakarta.validation.Valid;
@@ -27,21 +27,21 @@ public class TaskController {
         this.taskService = taskService;
     }
     @PostMapping
-    public ResponseEntity<ResponseTaskBodyDTO> createTask(@Valid @RequestBody CreateTaskBodyDTO dto){
-        ResponseTaskBodyDTO createdTask = taskService.createTask(dto);
+    public ResponseEntity<ResponseTaskDTO> createTask(@Valid @RequestBody CreateTaskBodyDTO dto){
+        ResponseTaskDTO createdTask = taskService.createTask(dto);
         return ResponseEntity.ok(createdTask);
     }
-    @GetMapping("/listagem")//BUSCAR TODAS AS TAREFAS, SENSIVEL COM OS DADOS
-    public ResponseEntity<List<ResponseTaskBodyDTO>> listagemTask(){
+    @GetMapping("/users/{id}")//BUSCAR TODAS AS TAREFAS, SENSIVEL COM OS DADOS
+    public ResponseEntity<List<ResponseTaskDTO>> listagemTask(){
         //CHAMA O METODO LOGICO
-        List<ResponseTaskBodyDTO> listagemLimpa = taskService.buscarTask();
+        List<ResponseTaskDTO> listagemLimpa = taskService.buscarTask();
         //RETORNA STATUS
         return ResponseEntity.ok(listagemLimpa);
     }
     //ROTA PARA BUSCAR UMA TASK POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseTaskBodyDTO> buscarPorId(@PathVariable UUID id){
-        ResponseTaskBodyDTO buscarPorIdEncontrada = taskService.buscarTaskPorId(id);
+    public ResponseEntity<ResponseTaskDTO> buscarPorId(@PathVariable UUID id){
+        ResponseTaskDTO buscarPorIdEncontrada = taskService.buscarTaskPorId(id);
         return ResponseEntity.ok(buscarPorIdEncontrada);
     }
     //ROTA PARA DELETAR
