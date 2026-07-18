@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUsersBodyDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services.UsersService;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseListUsersAndSearchUsersDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.UpdateUsersDTO;
 
 import jakarta.validation.Valid;
@@ -29,24 +29,24 @@ public class UsersController {
         this.userService = userService;
     }
     @PostMapping
-    public ResponseEntity<ResponseListUsersAndSearchUsersDTO> createUser(@Valid @RequestBody CreateUsersBodyDTO dto){
-        ResponseListUsersAndSearchUsersDTO createdUser = userService.create(dto);
+    public ResponseEntity<ResponseUsersDTO> createUser(@Valid @RequestBody CreateUsersBodyDTO dto){
+        ResponseUsersDTO createdUser = userService.create(dto);
         return ResponseEntity.ok(createdUser); // 200
     }
     //GET PARA LISTAR TODOS OS USUARIOS
     @GetMapping("/listagem")
-    public ResponseEntity<List<ResponseListUsersAndSearchUsersDTO>> listarTodos() {
+    public ResponseEntity<List<ResponseUsersDTO>> listarTodos() {
         //CONTROLER CHAMA O DTO LIMPO
-        List<ResponseListUsersAndSearchUsersDTO> listaLimpa = userService.listarTodosUsuarios();
+        List<ResponseUsersDTO> listaLimpa = userService.listarTodosUsuarios();
         return ResponseEntity.ok(listaLimpa);
     }
     //GET PARA BUSCAR INFO DOS USUARIOS COM BASE EM SEU ID OU EMAIL
     @GetMapping("/buscar")
-    public ResponseEntity<ResponseListUsersAndSearchUsersDTO> buscarPorIdOuEmail(
+    public ResponseEntity<ResponseUsersDTO> buscarPorIdOuEmail(
         @RequestParam(required = false) UUID id,
         @RequestParam(required = false) String email
         ){//FORMATA URL
-        ResponseListUsersAndSearchUsersDTO usuarioEncontradoPorEmail = userService.buscarUsuario(id, email);//DTO RECEBE
+        ResponseUsersDTO usuarioEncontradoPorEmail = userService.buscarUsuario(id, email);//DTO RECEBE
         return ResponseEntity.ok(usuarioEncontradoPorEmail);//200
     }
     //END POINT PARA DELETAR USUARIO
@@ -56,12 +56,12 @@ public class UsersController {
         return ResponseEntity.noContent().build(); //RETORNA O STATUS 
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseListUsersAndSearchUsersDTO> atualizarUsuario(
+    public ResponseEntity<ResponseUsersDTO> atualizarUsuario(
         @PathVariable UUID id,
         @RequestBody @Valid UpdateUsersDTO dadosNovos
     
     ){
-        ResponseListUsersAndSearchUsersDTO usuarioAtualizado = userService.atualizarUsuario(id, dadosNovos);
+        ResponseUsersDTO usuarioAtualizado = userService.atualizarUsuario(id, dadosNovos);
         return ResponseEntity.ok(usuarioAtualizado);
     }
 }

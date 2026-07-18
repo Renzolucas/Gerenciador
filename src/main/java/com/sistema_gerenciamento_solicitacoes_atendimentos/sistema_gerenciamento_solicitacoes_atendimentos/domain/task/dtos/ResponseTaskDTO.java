@@ -6,7 +6,7 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Priority;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Status;
 
 
-public record ResponseTaskBodyDTO(
+public record ResponseTaskDTO(
     String titulo, // TITULO DA TASK
     String descricao, // DESCRICAO
     LocalDateTime deadline, // DATA PRAZO
