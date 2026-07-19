@@ -2,7 +2,6 @@ package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciament
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -55,17 +54,11 @@ public class TaskService {
         );
     }
     //PARTE LOGICA DE LISTAR TUDO
-    public List<ResponseTaskDTO> buscarTask(){
+    public List<Task> buscarTask(){
         //BUSCAMOS TUDO
         List<Task> taskBrutas = taskRepository.findAll();
         //JOGAMOS NA ESTEIRA NO STREAM, O MAP RECEBE TRANSFORMA OS DADOS
-        return taskBrutas.stream().map(task -> new ResponseTaskDTO(
-            task.getTitulo(),
-            task.getDescricao(),
-            task.getDeadline(),
-            task.getStatus(),
-            task.getPriority()
-        )).collect(Collectors.toList());// COLECT COLETA E TRANSFORMA SEU TIPO
+        return taskBrutas;
     }
 
     //PARTE LOGICA DO BUSCAR POR ID
@@ -82,6 +75,7 @@ public class TaskService {
             buscarTask.getPriority()
         );
     }
+    
     //PARTE LOGICA DO DELETE
     public void deletarTask(UUID id){
         //BUSCA O ID DA TASK
@@ -91,4 +85,19 @@ public class TaskService {
         taskRepository.delete(buscarTask);
     }
 
+    //PARTE LOGICA DO PUT(ATUALIZAR DADOS)
+    public Task atualizarTask(UUID id, ResponseTaskDTO dadosNovos){
+        //PUXANDO TASK
+        Task buscarTask = taskRepository.findById(id)
+            .orElseThrow(()-> new RuntimeException("ID NAO ENCONTRADO"));
+        //ATUALIZAMOS OS VALORES
+        buscarTask.setTitulo(dadosNovos.titulo());
+        buscarTask.setDescricao(dadosNovos.descricao());
+        buscarTask.setDeadline(dadosNovos.deadline());
+        buscarTask.setStatus(dadosNovos.status());
+        buscarTask.setPriority(dadosNovos.priority());
+        Task taskAtualizada = taskRepository.save(buscarTask);
+        return taskAtualizada;
+            
+    }
 }
