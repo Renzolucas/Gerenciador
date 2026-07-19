@@ -2,7 +2,6 @@ package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciament
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -11,7 +10,7 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.TaskRepository;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskBodyDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskDTO;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -23,7 +22,7 @@ public class TaskService {
     }
 
     //PARTE LOGICA DE CRIAR UMA TASK
-    public ResponseTaskBodyDTO createTask(CreateTaskBodyDTO dto){
+    public ResponseTaskDTO createTask(CreateTaskBodyDTO dto){
         //CRIA UM ESPAÇO NA ENTIDADE PARA AS NOVAS INFORMAÇÕES NO BANCO
         Task novaTask = new Task();
 
@@ -46,7 +45,7 @@ public class TaskService {
         novaTask = taskRepository.save(novaTask);
 
         //CRIAMOS UMA NOVA "CARTA"/DTO PARA OCUTAR AS INFORMAÇÕES DOS IDs INFORMADOS.
-        return new ResponseTaskBodyDTO(
+        return new ResponseTaskDTO(
         novaTask.getTitulo(),
         novaTask.getDescricao(),
         novaTask.getDeadline(),
@@ -55,26 +54,20 @@ public class TaskService {
         );
     }
     //PARTE LOGICA DE LISTAR TUDO
-    public List<ResponseTaskBodyDTO> buscarTask(){
+    public List<Task> buscarTask(){
         //BUSCAMOS TUDO
         List<Task> taskBrutas = taskRepository.findAll();
         //JOGAMOS NA ESTEIRA NO STREAM, O MAP RECEBE TRANSFORMA OS DADOS
-        return taskBrutas.stream().map(task -> new ResponseTaskBodyDTO(
-            task.getTitulo(),
-            task.getDescricao(),
-            task.getDeadline(),
-            task.getStatus(),
-            task.getPriority()
-        )).collect(Collectors.toList());// COLECT COLETA E TRANSFORMA SEU TIPO
+        return taskBrutas;
     }
 
     //PARTE LOGICA DO BUSCAR POR ID
-    public ResponseTaskBodyDTO buscarTaskPorId(UUID id){
+    public ResponseTaskDTO buscarTaskPorId(UUID id){
         //BUSCA O ID DA TASK
         Task buscarTask = taskRepository.findById(id)
             .orElseThrow(()-> new RuntimeException("ID DA TASK NAO ENCONTRADO"));
         //SE SIM, CHAMAMOS A ESTRUTURA DO JSON DE RETORNO
-        return new ResponseTaskBodyDTO(
+        return new ResponseTaskDTO(
             buscarTask.getTitulo(),
             buscarTask.getDescricao(),
             buscarTask.getDeadline(),
@@ -82,6 +75,7 @@ public class TaskService {
             buscarTask.getPriority()
         );
     }
+    
     //PARTE LOGICA DO DELETE
     public void deletarTask(UUID id){
         //BUSCA O ID DA TASK
@@ -91,4 +85,19 @@ public class TaskService {
         taskRepository.delete(buscarTask);
     }
 
+    //PARTE LOGICA DO PUT(ATUALIZAR DADOS)
+    public Task atualizarTask(UUID id, ResponseTaskDTO dadosNovos){
+        //PUXANDO TASK
+        Task buscarTask = taskRepository.findById(id)
+            .orElseThrow(()-> new RuntimeException("ID NAO ENCONTRADO"));
+        //ATUALIZAMOS OS VALORES
+        buscarTask.setTitulo(dadosNovos.titulo());
+        buscarTask.setDescricao(dadosNovos.descricao());
+        buscarTask.setDeadline(dadosNovos.deadline());
+        buscarTask.setStatus(dadosNovos.status());
+        buscarTask.setPriority(dadosNovos.priority());
+        Task taskAtualizada = taskRepository.save(buscarTask);
+        return taskAtualizada;
+            
+    }
 }

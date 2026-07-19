@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.config.SecurityConfig;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUsersBodyDTO;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseListUsersAndSearchUsersDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.UpdateUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
 @Service
@@ -24,7 +24,7 @@ public class UsersService {
         this.passwordCripto = passwordCripto;
     }
 
-    public ResponseListUsersAndSearchUsersDTO create(CreateUsersBodyDTO dto) {
+    public ResponseUsersDTO create(CreateUsersBodyDTO dto) {
         
         // 1. Criamos a "caixa vazia" da Entidade que vai para o banco
         Users novoUsuario = new Users();
@@ -43,7 +43,7 @@ public class UsersService {
         novoUsuario.setRole(dto.role());
         // Mandamos o repositório salvar no banco e retornamos o resultado
         novoUsuario = usersRepository.save(novoUsuario);
-        return new ResponseListUsersAndSearchUsersDTO(
+        return new ResponseUsersDTO(
                 novoUsuario.getId(),
                 novoUsuario.getName(),
                 novoUsuario.getEmail(),
@@ -54,12 +54,12 @@ public class UsersService {
     }
 
     // GET LISTAGEM PUXAR TODOS OS USUARIOS (AGORA PROTEGIDO COM DTO)
-    public List<ResponseListUsersAndSearchUsersDTO> listarTodosUsuarios(){
+    public List<ResponseUsersDTO> listarTodosUsuarios(){
         //  Busca todo mundo do banco (com ID, senha, etc)
         List<Users> usuariosBrutos = usersRepository.findAll();
 
         //  Transforma (Mapeia) a lista bruta na nossa caixinha limpa (DTO)
-        return usuariosBrutos.stream().map(usuario -> new ResponseListUsersAndSearchUsersDTO(
+        return usuariosBrutos.stream().map(usuario -> new ResponseUsersDTO(
                 usuario.getId(),
                 usuario.getName(),
                 usuario.getEmail(),
@@ -70,14 +70,14 @@ public class UsersService {
     }
 
     //BUSCAR USUARIO POR ID
-    public ResponseListUsersAndSearchUsersDTO buscarUsuario(UUID id, String email){
+    public ResponseUsersDTO buscarUsuario(UUID id, String email){
         //VERIFICAMOS PRIMEIRO SE EXISTE O ID
         if(id != null && (email == null || email.isBlank())){
             Users buscarUsuarioBruto = usersRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
             //SE ELE EXISTIR, FAZEMOS A MESMA LOGICA DE CADA USUÁRIO,
             //CRIAR UM NOVO DTO PARA NAO APAGAR O OUTRO
-            return new ResponseListUsersAndSearchUsersDTO(
+            return new ResponseUsersDTO(
                 buscarUsuarioBruto.getId(),
                 buscarUsuarioBruto.getName(),
                 buscarUsuarioBruto.getEmail(),
@@ -92,7 +92,7 @@ public class UsersService {
         Users buscarUsuarioBruto = usersRepository.findByEmail(email)
             .orElseThrow(() -> new RuntimeException("ESSE EMAIL NAO ESTA VINCULADO A NENHUM USUARIO"));
         //SE ELE EXISTIR, CRIAMOS O DTO DE RESPOSTA
-        return new ResponseListUsersAndSearchUsersDTO(
+        return new ResponseUsersDTO(
             buscarUsuarioBruto.getId(),
             buscarUsuarioBruto.getName(),
             buscarUsuarioBruto.getEmail(),
@@ -118,7 +118,7 @@ public class UsersService {
     }
     
     //UPDATE DE UM USUARIO
-    public ResponseListUsersAndSearchUsersDTO atualizarUsuario(UUID id, UpdateUsersDTO dadosNovos){
+    public ResponseUsersDTO atualizarUsuario(UUID id, UpdateUsersDTO dadosNovos){
         //PUXAR TODOS OS DADOS
         Users buscarUsuarioBruto = usersRepository.findById(id)
             .orElseThrow(()-> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
@@ -129,7 +129,7 @@ public class UsersService {
         // E AQUI SALVAMOS NO BANCO DE DADOS ATRAVES DO REPOSITORY
         Users usuarioAtualizado = usersRepository.save(buscarUsuarioBruto);
         //AQUI, COMO VAMOS ATUALIZAR SOMENTE 1 USUARIO POR VEZ, NAO HÁ NECESSIDADEO DO STREAM MAP
-        return new ResponseListUsersAndSearchUsersDTO(
+        return new ResponseUsersDTO(
                 usuarioAtualizado.getId(),
                 usuarioAtualizado.getName(),
                 usuarioAtualizado.getEmail(),
