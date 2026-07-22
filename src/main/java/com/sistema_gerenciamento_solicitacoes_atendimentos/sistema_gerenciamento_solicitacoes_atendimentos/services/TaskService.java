@@ -100,4 +100,16 @@ public class TaskService {
         return taskAtualizada;
             
     }
+
+    public List<Task> buscarTaskPorIdUsers(UUID id){
+        //VERIFICA O ID DO USUARIO
+        Users buscarIdUsers = usersRepository.findById(id)
+            .orElseThrow(()-> new RuntimeException("ID DO USUARIO NAO ENCONTRADO"));
+        //AQUI EU VERIFICO SE EXISTE O ID DO USUARIO, SE SIM, ENTAO MANDO PRO CONTROLLER
+        List<Task> buscarTask = taskRepository.findByUsersEmployeeOrUsersAdmin(buscarIdUsers, buscarIdUsers);
+        if(buscarTask.isEmpty()){
+            throw new RuntimeException("O id enviado nao tem nenhuma task registrada");
+        }
+        return buscarTask;
+    }   
 }

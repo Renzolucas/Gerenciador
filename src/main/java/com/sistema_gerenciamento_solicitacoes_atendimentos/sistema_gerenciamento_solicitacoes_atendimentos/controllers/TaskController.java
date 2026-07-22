@@ -78,4 +78,17 @@ public class TaskController {
         );
         return ResponseEntity.ok(novoDTO);
     }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<List<ResponseTaskDTO>> listagemIdUser(@PathVariable UUID id){
+        List<Task> task = taskService.buscarTaskPorIdUsers(id);
+        List<ResponseTaskDTO> novoDTO = task.stream().map(taskUsers -> new ResponseTaskDTO (
+            taskUsers.getTitulo(),
+            taskUsers.getDescricao(),
+            taskUsers.getDeadline(),
+            taskUsers.getStatus(),
+            taskUsers.getPriority()            
+        )).collect(Collectors.toList());
+        return ResponseEntity.ok(novoDTO);
+    }
 }

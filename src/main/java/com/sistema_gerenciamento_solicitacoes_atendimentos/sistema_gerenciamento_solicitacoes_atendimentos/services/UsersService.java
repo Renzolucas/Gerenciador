@@ -29,10 +29,10 @@ public class UsersService {
         // 1. Criamos a "caixa vazia" da Entidade que vai para o banco
         Users novoUsuario = new Users();
          //VERIFICA SE JA EXISTE UM EMAIL IGUAL
-        Optional<Users> userExist = usersRepository.findByEmail(novoUsuario.getEmail());
+        Optional<Users> userExist = usersRepository.findByEmail(dto.email());
         //SE SIM ->
         if (userExist.isPresent()) {
-            throw new RuntimeException("Já existe usuário com email: " + novoUsuario.getEmail());
+            throw new RuntimeException("Já existe usuário com email: " + dto.email());
         }
         // 2. Passamos os dados do DTO (Formulário) para a Entidade
         novoUsuario.setName(dto.name());
