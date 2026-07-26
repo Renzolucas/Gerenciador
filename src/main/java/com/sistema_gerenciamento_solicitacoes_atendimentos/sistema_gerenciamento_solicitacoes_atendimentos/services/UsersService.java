@@ -105,7 +105,7 @@ public class UsersService {
         //SE ELE FOR NULO, ENTAO O USUARIO NAO ESCREVEU NADA:
         } else {
             //MENSAGEM DE RETORNO
-            throw new RuntimeException("Erro: Você precisa informar um ID ou um E-mail para realizar a busca.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Erro: Você precisa informar um ID ou um E-mail para realizar a busca.");
         }
     }
     
