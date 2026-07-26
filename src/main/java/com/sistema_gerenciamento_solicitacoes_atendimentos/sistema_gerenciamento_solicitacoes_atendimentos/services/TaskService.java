@@ -3,14 +3,16 @@ package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciament
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.Task;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.CreateTaskBodyDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.TaskRepository;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
-import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.dtos.ResponseTaskDTO;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -28,9 +30,9 @@ public class TaskService {
 
         //BUSCAR NO BANDO DE DADOS SE EXISTE OS IDs PELA COMUNICAO USERSREPOSITY
         Users employee = usersRepository.findById(dto.usersEmployeeId())
-            .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com o ID: " + dto.usersEmployeeId()));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Funcionário não encontrado com o ID: " + dto.usersEmployeeId()));
         Users admin = usersRepository.findById(dto.usersAdminId())
-            .orElseThrow(() -> new RuntimeException("Admin não encontrado com o ID: " + dto.usersAdminId()));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admin não encontrado com o ID: " + dto.usersAdminId()));
         
         
         //DADOS DO DTO PARA A ENTIDADE
@@ -65,7 +67,7 @@ public class TaskService {
     public ResponseTaskDTO buscarTaskPorId(UUID id){
         //BUSCA O ID DA TASK
         Task buscarTask = taskRepository.findById(id)
-            .orElseThrow(()-> new RuntimeException("ID DA TASK NAO ENCONTRADO"));
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "ID DA TASK NAO ENCONTRADO"));
         //SE SIM, CHAMAMOS A ESTRUTURA DO JSON DE RETORNO
         return new ResponseTaskDTO(
             buscarTask.getTitulo(),
@@ -80,7 +82,7 @@ public class TaskService {
     public void deletarTask(UUID id){
         //BUSCA O ID DA TASK
         Task buscarTask = taskRepository.findById(id)
-            .orElseThrow(()-> new RuntimeException("ID NAO ENCONTRADO"));
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"ID NAO ENCONTRADO"));
         //SE SIM, DELETAMOS O USUARIO
         taskRepository.delete(buscarTask);
     }
@@ -89,7 +91,7 @@ public class TaskService {
     public Task atualizarTask(UUID id, ResponseTaskDTO dadosNovos){
         //PUXANDO TASK
         Task buscarTask = taskRepository.findById(id)
-            .orElseThrow(()-> new RuntimeException("ID NAO ENCONTRADO"));
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"ID NAO ENCONTRADO"));
         //ATUALIZAMOS OS VALORES
         buscarTask.setTitulo(dadosNovos.titulo());
         buscarTask.setDescricao(dadosNovos.descricao());
@@ -104,11 +106,11 @@ public class TaskService {
     public List<Task> buscarTaskPorIdUsers(UUID id){
         //VERIFICA O ID DO USUARIO
         Users buscarIdUsers = usersRepository.findById(id)
-            .orElseThrow(()-> new RuntimeException("ID DO USUARIO NAO ENCONTRADO"));
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"ID NAO ENCONTRADO"));
         //AQUI EU VERIFICO SE EXISTE O ID DO USUARIO, SE SIM, ENTAO MANDO PRO CONTROLLER
         List<Task> buscarTask = taskRepository.findByUsersEmployeeOrUsersAdmin(buscarIdUsers, buscarIdUsers);
         if(buscarTask.isEmpty()){
-            throw new RuntimeException("O id enviado nao tem nenhuma task registrada");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"ID TASK NAO ENCONTRADO");
         }
         return buscarTask;
     }   

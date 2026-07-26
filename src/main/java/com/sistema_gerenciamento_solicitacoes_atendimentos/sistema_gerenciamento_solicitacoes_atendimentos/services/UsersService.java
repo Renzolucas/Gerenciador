@@ -1,11 +1,13 @@
 package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.services;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.config.SecurityConfig;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
@@ -32,7 +34,7 @@ public class UsersService {
         Optional<Users> userExist = usersRepository.findByEmail(dto.email());
         //SE SIM ->
         if (userExist.isPresent()) {
-            throw new RuntimeException("Já existe usuário com email: " + dto.email());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe usuário com email: " + dto.email());
         }
         // 2. Passamos os dados do DTO (Formulário) para a Entidade
         novoUsuario.setName(dto.name());
@@ -74,7 +76,7 @@ public class UsersService {
         //VERIFICAMOS PRIMEIRO SE EXISTE O ID
         if(id != null && (email == null || email.isBlank())){
             Users buscarUsuarioBruto = usersRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
             //SE ELE EXISTIR, FAZEMOS A MESMA LOGICA DE CADA USUÁRIO,
             //CRIAR UM NOVO DTO PARA NAO APAGAR O OUTRO
             return new ResponseUsersDTO(
@@ -112,7 +114,7 @@ public class UsersService {
     public void deletarUsuario(UUID id){
         //BUSCAMOS NO BANCO UM USUARIO COM ID MANDADO PELO POSTMAN
         Users buscarUsuarioBruto = usersRepository.findById(id)//se nao encontrado
-            .orElseThrow(()-> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
         //se sim
         usersRepository.delete(buscarUsuarioBruto);
     }
@@ -121,7 +123,7 @@ public class UsersService {
     public ResponseUsersDTO atualizarUsuario(UUID id, UpdateUsersDTO dadosNovos){
         //PUXAR TODOS OS DADOS
         Users buscarUsuarioBruto = usersRepository.findById(id)
-            .orElseThrow(()-> new RuntimeException("ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "ESSE ID NAO ESTA VINCULADO A NENHUM USUARIO"));
         //AQUI ATUALIZAMOS OS VALORES NOVOS
         buscarUsuarioBruto.setName(dadosNovos.name());
         buscarUsuarioBruto.setEmail(dadosNovos.email());
