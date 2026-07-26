@@ -92,7 +92,7 @@ public class UsersService {
         else if ((email != null && !email.isBlank())&& id == null) {
             //VERIFICAR SE EXISTE O EMAIL
         Users buscarUsuarioBruto = usersRepository.findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("ESSE EMAIL NAO ESTA VINCULADO A NENHUM USUARIO"));
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"ESSE EMAIL NAO ESTA VINCULADO A NENHUM USUARIO"));
         //SE ELE EXISTIR, CRIAMOS O DTO DE RESPOSTA
         return new ResponseUsersDTO(
             buscarUsuarioBruto.getId(),
