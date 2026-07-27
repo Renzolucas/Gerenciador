@@ -13,6 +13,8 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.TaskRepository;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
+
+import jakarta.transaction.Transactional;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -79,6 +81,7 @@ public class TaskService {
     }
     
     //PARTE LOGICA DO DELETE
+    @Transactional
     public void deletarTask(UUID id){
         //BUSCA O ID DA TASK
         Task buscarTask = taskRepository.findById(id)

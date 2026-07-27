@@ -15,6 +15,8 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.UpdateUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
+
+import jakarta.transaction.Transactional;
 @Service
 public class UsersService {
     @Autowired
@@ -111,6 +113,7 @@ public class UsersService {
     
 
     //DELETAR UM USUARIO
+    @Transactional
     public void deletarUsuario(UUID id){
         //BUSCAMOS NO BANCO UM USUARIO COM ID MANDADO PELO POSTMAN
         Users buscarUsuarioBruto = usersRepository.findById(id)//se nao encontrado
