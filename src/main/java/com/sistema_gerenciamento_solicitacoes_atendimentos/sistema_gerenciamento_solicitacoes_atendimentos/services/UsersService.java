@@ -14,6 +14,7 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.CreateUsersBodyDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.ResponseUsersDTO;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.dtos.UpdateUsersDTO;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.exceptions.GerenciadorConflictExceptions;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.repositories.UsersRepository;
 
 import jakarta.transaction.Transactional;
@@ -36,7 +37,7 @@ public class UsersService {
         Optional<Users> userExist = usersRepository.findByEmail(dto.email());
         //SE SIM ->
         if (userExist.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Já existe usuário com email: " + dto.email());
+            throw new GerenciadorConflictExceptions();
         }
         // 2. Passamos os dados do DTO (Formulário) para a Entidade
         novoUsuario.setName(dto.name());
