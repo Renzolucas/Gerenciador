@@ -8,8 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-    import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.UsersRole;
-    import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.Task;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.UsersRole;
+import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.task.Task;
 
     import jakarta.persistence.Column;
     import jakarta.persistence.Entity;
@@ -17,9 +17,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
     import jakarta.persistence.Enumerated;
     import jakarta.persistence.GeneratedValue;
     import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+    import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-    import jakarta.persistence.Table;
+import jakarta.persistence.Table;
+    import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
     @Entity //DIZ AO BANCO COM AJUDA DO SPRING (TUDO AQUI E TABELA)
     @Table(name = "users")
@@ -34,23 +36,33 @@ import jakarta.persistence.OneToMany;
         @GeneratedValue(strategy = GenerationType.UUID) //DIZ AO SPRING QUE SE Long Id for null entao pegar o id anterior e ++
         private UUID id; // ID DO USUARIO
 
+        //VALIDAÇÃO DE NOME
         @Column(nullable = false)
+        @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres")
         private String name; // NOME DO USUARIO
 
+        //VALIDAÇÃO DE EMAIL
         @Column(nullable = false, unique = true)
+        @Email(message = "O formato do e-mail está inválido")
         private String email; // EMAIL DO USUARIO
 
+        //VALIDAÇÃO DE SENHA
         @Column(nullable = false)
         private String password; // SENHA DO USUARIO
 
+        //VALIDAÇÃO DE ROLE
         @Enumerated(EnumType.STRING)
+        @Column(nullable = false)
         private UsersRole role; // CATEGORIA DO USUARIO (ADMIN OR EMPLOYEE)
-
+        
+        //VALIDAÇÃO DE DATA DE CRIAÇÃO
         @CreationTimestamp
         private LocalDateTime createdAtUser; //DATA DE CRIAÇÃO DO USUARIO
 
+        //VALIDAÇÃO DE DATA DE ATUALIZAÇÃO
         @UpdateTimestamp
         private LocalDateTime updateAtUser; //DATA DE ATUALIZAÇÃO
+        
         //LISTA DE TASK QUE O USER TEM
         @OneToMany(mappedBy = "usersEmployee")
         @JsonIgnore
