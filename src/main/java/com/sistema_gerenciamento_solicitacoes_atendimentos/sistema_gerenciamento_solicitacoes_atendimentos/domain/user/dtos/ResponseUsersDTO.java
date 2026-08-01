@@ -7,7 +7,6 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.UsersRole;
 
 //RECORD PARA LEVAR AO POSTMAN AS INFORMAÇÕES DA BUSCA
 public record ResponseUsersDTO(
-    //AQUI DECLARAMOS AS ENTIDADES QUE VAO APARECER, (TUDO MENOS PASSWORD)
     UUID id,
     String name,
     String email,

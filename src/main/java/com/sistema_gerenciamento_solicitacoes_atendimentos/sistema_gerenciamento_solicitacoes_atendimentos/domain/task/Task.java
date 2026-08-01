@@ -9,6 +9,7 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Priority;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.enums.Status;
 import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user.Users;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,22 +33,43 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id; // ID da Task
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    @JsonIgnore
+    
+    //VALIDAÇÃO DE ID EMPLOYEE
+    @ManyToOne  //DIZ QUE O ATRIBUTO PODE SER USADO POR VARIAS CLASSES
+    @JoinColumn(name = "employee_id",nullable=false) //DIZ QUE O ATRIBUTO É UMA COLUNA
+    @JsonIgnore //IGNORA O JSON, PARA NAO CAUSAR LOOP DE RECURSOS
     private Users usersEmployee; // NOME DO EMPLOYEE
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
+
+    //VALIDAÇÃO DE ID ADMIN
+    @ManyToOne //DIZ QUE O ATRIBUTO PODE SER USADO POR VARIAS CLASSES
+    @JoinColumn(name = "admin_id",nullable=false) //DIZ QUE O ATRIBUTO É UMA COLUNA + VALIDAÇÃO DE NULL
+    @JsonIgnore //IGNORA O JSON, PARA NAO CAUSAR LOOP DE RECURSOS
     private Users usersAdmin; //NOME DO ADMIN
-    @Enumerated(EnumType.STRING)
+
+    //VALIDAÇÃO DE STATUS
+    @Column(nullable=false) //VALIDAÇÃO DE STATUS
+    @Enumerated(EnumType.STRING) //INDICA QUE O STATUS É UMA ENUM
     private Status status; // DEFINIR O STATUS (ENUM COM 3 OPCAO)
-    @Enumerated(EnumType.STRING)
+
+    //VALIDAÇÃO DE PRIORITY
+    @Column(nullable = false) //VALIDAÇÃO DE PRIORITY
+    @Enumerated(EnumType.STRING) //INDICA QUE A PRIORIDADE É UMA ENUM
     private Priority priority; // DEFINIR A PRIORIDADE (BAIXA,MEDIA, ALTA)
+
+    //VALIDAÇÃO DE TITULO
+    @Column(nullable = false) //VALIDAÇÃO DE TITULO
     private String titulo; // TITULO DA TASK
+
+    //VALIDAÇÃO DE DESCRIÇÃO
+    @Column(nullable = false) //VALIDAÇÃO DE DESCRIÇÃO
     private String descricao; // DESCRIÇÃO DA TASK
+
     @CreationTimestamp
     private LocalDateTime createdAt;  //DATA DE CRIAÇÃO DA TASK
+
     private LocalDateTime updatedAt; //DATA DE EDIÇÃO DA TASK
+    //VALIDAÇÃO DE DEADLINE
+    @Column(nullable = false) //VALIDAÇÃO DE DEADLINE
     private LocalDateTime deadline; // DATA PRAZO
     
     //CONSTRUCTOR//
