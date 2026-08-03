@@ -1,0 +1,19 @@
+{
+  "description": "Monorepo para o projeto de gerenciamento de solicitações de atendimentos",
+  "name": "gerenciador",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "turbo run format"
+  },
+  "keywords": [],
+  "author": "@lucascc",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.0",
+  "devDependencies": {
+    "turbo": "^2.10.8"
+  }
+}

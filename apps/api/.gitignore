@@ -1,0 +1,43 @@
+# Node
+node_modules/
+.pnpm-store/
+.turbo/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java
+**/target/
+**/.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ
+*.iml
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VS Code Java
+.classpath
+.factorypath
+
+# Build
+dist/
+coverage/
