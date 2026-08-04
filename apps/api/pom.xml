@@ -21,6 +21,12 @@
     </properties>
 
     <dependencies>
+        <!-- 00 verifica se o front se comunica com o back-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- 1. Segurança -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
