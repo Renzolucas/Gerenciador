@@ -68,4 +68,10 @@ public class UsersController {
         ResponseUsersDTO usuarioAtualizado = userService.atualizarUsuario(id, dadosNovos);
         return ResponseEntity.ok(usuarioAtualizado);
     }
+    //teste de servidor
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck(){
+        return ResponseEntity.ok().body("O servidor está funcionando");
+    }
+    
 }
