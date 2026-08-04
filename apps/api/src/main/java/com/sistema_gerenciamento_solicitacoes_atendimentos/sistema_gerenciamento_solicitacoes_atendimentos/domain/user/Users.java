@@ -1,4 +1,4 @@
-    package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user;
+package com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.domain.user;
 
     import java.time.LocalDateTime;
     import java.util.List;
