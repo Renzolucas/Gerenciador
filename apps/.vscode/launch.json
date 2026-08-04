@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SistemaGerenciamentoSolicitacoesAtendimentosApplication<sistema-gerenciamento-solicitacoes-atendimentos>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento_solicitacoes_atendimentos.SistemaGerenciamentoSolicitacoesAtendimentosApplication",
+            "projectName": "sistema-gerenciamento-solicitacoes-atendimentos",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
