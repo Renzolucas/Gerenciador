@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import com.sistema_gerenciamento_solicitacoes_atendimentos.sistema_gerenciamento
 import jakarta.validation.Valid;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/users")
 public class UsersController {
     private final UsersService userService;
@@ -43,6 +45,7 @@ public class UsersController {
     //GET PARA BUSCAR INFO DOS USUARIOS COM BASE EM SEU ID OU EMAIL
     @GetMapping("/buscar")
     public ResponseEntity<ResponseUsersDTO> buscarPorIdOuEmail(
+        @Valid
         @RequestParam(required = false) UUID id,
         @RequestParam(required = false) String email
         ){//FORMATA URL
@@ -55,6 +58,7 @@ public class UsersController {
         userService.deletarUsuario(id);//CHAMA O METODO DELETAR DO SERVICE
         return ResponseEntity.noContent().build(); //RETORNA O STATUS 
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<ResponseUsersDTO> atualizarUsuario(
         @PathVariable UUID id,
