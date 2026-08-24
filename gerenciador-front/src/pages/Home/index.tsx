@@ -1,25 +1,18 @@
 import "./style.css";
+import { useEffect } from "react";
 import Delete from "../../assets/delete.svg";
+import Api from "../../services/api.ts"
 
 function Home() {
-  const users = [
-    {
-      id: "12123oi",
-      name: "Lucas",
-      email: "Lucas@gmail.com",
-      senha: "123",
-      role: "ADMIN",
-      createdAtUser: "2025:05:01T11:00:00",
-    },
-    {
-      id: "12123oi",
-      name: "Lucas1",
-      email: "Lucas1@gmail.com",
-      senha: "123",
-      role: "EMPLOYEE",
-      createdAtUser: "2025:05:01T11:00:00",
-    },
-  ];
+  let users
+
+  async function getUsers(){
+    users = await Api.get('/users/listagem')
+  }
+
+  useEffect(() => { //inciar com o carregamento do site
+    getUsers()
+  },[])
 
   return (
     <div className="container">
